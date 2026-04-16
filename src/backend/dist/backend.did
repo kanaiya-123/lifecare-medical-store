@@ -1,0 +1,213 @@
+type SupplierInput = 
+ record {
+   address: text;
+   email: text;
+   gstNo: text;
+   mobile: text;
+   name: text;
+ };
+type SupplierBillItem = 
+ record {
+   amount: float64;
+   batchNo: text;
+   discPercent: float64;
+   expDt: text;
+   free: nat;
+   gstPercent: float64;
+   hsn: text;
+   itemName: text;
+   mfg: text;
+   mrp: float64;
+   netAmt: float64;
+   pack: text;
+   qty: nat;
+   rate: float64;
+   sn: nat;
+ };
+type SupplierBillInput = 
+ record {
+   addLessCnDn: float64;
+   cashDiscountTotal: float64;
+   cgstAmount: float64;
+   challanNo: opt text;
+   date: int;
+   freightPktCharge: float64;
+   grandTotal: float64;
+   invoiceNo: text;
+   items: vec SupplierBillItem;
+   lrNo: opt text;
+   roundOff: float64;
+   salesMan: opt text;
+   schemeDiscountTotal: float64;
+   sgstAmount: float64;
+   supplierId: nat;
+   termsConditions: opt text;
+   transport: opt text;
+ };
+type SupplierBill = 
+ record {
+   addLessCnDn: float64;
+   cashDiscountTotal: float64;
+   cgstAmount: float64;
+   challanNo: opt text;
+   createdAt: int;
+   date: int;
+   freightPktCharge: float64;
+   grandTotal: float64;
+   id: nat;
+   invoiceNo: text;
+   items: vec SupplierBillItem;
+   lrNo: opt text;
+   roundOff: float64;
+   salesMan: opt text;
+   schemeDiscountTotal: float64;
+   sgstAmount: float64;
+   supplierId: nat;
+   supplierName: text;
+   termsConditions: opt text;
+   transport: opt text;
+ };
+type Supplier = 
+ record {
+   address: text;
+   createdAt: int;
+   email: text;
+   gstNo: text;
+   id: nat;
+   mobile: text;
+   name: text;
+ };
+type MedicineInput = 
+ record {
+   brand: text;
+   category: Category;
+   discount: float64;
+   expiryDate: int;
+   name: text;
+   price: float64;
+   stockQuantity: nat;
+ };
+type Medicine = 
+ record {
+   brand: text;
+   category: Category;
+   createdAt: int;
+   discount: float64;
+   expiryDate: int;
+   id: nat;
+   name: text;
+   price: float64;
+   stockQuantity: nat;
+ };
+type DashboardStats = 
+ record {
+   expiringMedicines: vec Medicine;
+   lowStockMedicines: vec Medicine;
+   totalCustomers: nat;
+   totalMedicines: nat;
+   totalSales: float64;
+ };
+type CustomerInput = 
+ record {
+   address: text;
+   mobile: text;
+   name: text;
+ };
+type Customer = 
+ record {
+   address: text;
+   createdAt: int;
+   id: nat;
+   mobile: text;
+   name: text;
+ };
+type Category = 
+ variant {
+   Capsule;
+   Cream;
+   Drops;
+   Injection;
+   Other;
+   Syrup;
+   Tablet;
+ };
+type BillItemInput = 
+ record {
+   amount: float64;
+   discount: float64;
+   hsnSac: opt text;
+   medicineId: nat;
+   medicineName: text;
+   price: float64;
+   quantity: nat;
+ };
+type BillItem = 
+ record {
+   amount: float64;
+   discount: float64;
+   hsnSac: opt text;
+   medicineId: nat;
+   medicineName: text;
+   price: float64;
+   quantity: nat;
+ };
+type BillInput = 
+ record {
+   customerGstin: opt text;
+   customerId: nat;
+   gstPercent: float64;
+   items: vec BillItemInput;
+   paymentMode: opt text;
+   placeOfSupply: opt text;
+   receivedAmount: opt float64;
+ };
+type Bill = 
+ record {
+   balanceAmount: float64;
+   createdAt: int;
+   customerGstin: opt text;
+   customerId: nat;
+   customerMobile: text;
+   customerName: text;
+   discountAmount: float64;
+   gstAmount: float64;
+   gstPercent: float64;
+   id: nat;
+   invoiceNumber: text;
+   items: vec BillItem;
+   paymentMode: text;
+   placeOfSupply: opt text;
+   receivedAmount: float64;
+   subtotal: float64;
+   totalAmount: float64;
+ };
+service : {
+  addCustomer: (input: CustomerInput) -> (nat);
+  addMedicine: (input: MedicineInput) -> (nat);
+  addSupplier: (input: SupplierInput) -> (nat);
+  createBill: (customerId: nat, items: vec BillItemInput, gstPercent:
+   float64) -> (nat);
+  createBillV2: (input: BillInput) -> (nat);
+  createSupplierBill: (input: SupplierBillInput) -> (SupplierBill);
+  deleteCustomer: (id: nat) -> ();
+  deleteMedicine: (id: nat) -> ();
+  deleteSupplier: (id: nat) -> ();
+  deleteSupplierBill: (id: nat) -> (bool);
+  getAllBills: () -> (vec Bill) query;
+  getAllCustomers: () -> (vec Customer) query;
+  getAllMedicines: () -> (vec Medicine) query;
+  getAllSupplierBills: () -> (vec SupplierBill) query;
+  getAllSuppliers: () -> (vec Supplier) query;
+  getBill: (id: nat) -> (Bill) query;
+  getCustomer: (id: nat) -> (Customer) query;
+  getCustomerBills: (customerId: nat) -> (vec Bill) query;
+  getDashboardStats: () -> (DashboardStats) query;
+  getMedicine: (id: nat) -> (Medicine) query;
+  getSupplier: (id: nat) -> (Supplier) query;
+  getSupplierBill: (id: nat) -> (opt SupplierBill) query;
+  getSupplierBillsBySupplier: (supplierId: nat) -> (vec SupplierBill) query;
+  searchMedicines: (term: text) -> (vec Medicine) query;
+  updateCustomer: (id: nat, input: CustomerInput) -> ();
+  updateMedicine: (id: nat, input: MedicineInput) -> ();
+  updateSupplier: (id: nat, input: SupplierInput) -> ();
+}

@@ -1,0 +1,169 @@
+// Version: 1.0.0
+type BillItem__247861991 =
+  {
+    amount : Float;
+    discount : Float;
+    hsnSac : ?Text;
+    medicineId : Nat;
+    medicineName : Text;
+    price : Float;
+    quantity : Nat
+  };
+type Bill__255701916 =
+  {
+    balanceAmount : Float;
+    createdAt : Int;
+    customerGstin : ?Text;
+    customerId : Nat;
+    customerMobile : Text;
+    customerName : Text;
+    discountAmount : Float;
+    gstAmount : Float;
+    gstPercent : Float;
+    id : Nat;
+    invoiceNumber : Text;
+    items : [BillItem__247861991];
+    paymentMode : Text;
+    placeOfSupply : ?Text;
+    receivedAmount : Float;
+    subtotal : Float;
+    totalAmount : Float
+  };
+type Category__164941945 =
+  {#Capsule; #Cream; #Drops; #Injection; #Other; #Syrup; #Tablet};
+type Customer__263943254 =
+  {address : Text; createdAt : Int; id : Nat; mobile : Text; name : Text};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Medicine__869616789 =
+  {
+    brand : Text;
+    category : Category__164941945;
+    createdAt : Int;
+    discount : Float;
+    expiryDate : Int;
+    id : Nat;
+    name : Text;
+    price : Float;
+    stockQuantity : Nat
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type OldBillItem__666101569 =
+  {
+    amount : Float;
+    discount : Float;
+    medicineId : Nat;
+    medicineName : Text;
+    price : Float;
+    quantity : Nat
+  };
+type OldBill__883518885 =
+  {
+    createdAt : Int;
+    customerId : Nat;
+    customerMobile : Text;
+    customerName : Text;
+    discountAmount : Float;
+    gstAmount : Float;
+    gstPercent : Float;
+    id : Nat;
+    invoiceNumber : Text;
+    items : [OldBillItem__666101569];
+    subtotal : Float;
+    totalAmount : Float
+  };
+type SupplierBillItem__180858972 =
+  {
+    amount : Float;
+    batchNo : Text;
+    discPercent : Float;
+    expDt : Text;
+    free : Nat;
+    gstPercent : Float;
+    hsn : Text;
+    itemName : Text;
+    mfg : Text;
+    mrp : Float;
+    netAmt : Float;
+    pack : Text;
+    qty : Nat;
+    rate : Float;
+    sn : Nat
+  };
+type SupplierBill__140731059 =
+  {
+    addLessCnDn : Float;
+    cashDiscountTotal : Float;
+    cgstAmount : Float;
+    challanNo : ?Text;
+    createdAt : Int;
+    date : Int;
+    freightPktCharge : Float;
+    grandTotal : Float;
+    id : Nat;
+    invoiceNo : Text;
+    items : [SupplierBillItem__180858972];
+    lrNo : ?Text;
+    roundOff : Float;
+    salesMan : ?Text;
+    schemeDiscountTotal : Float;
+    sgstAmount : Float;
+    supplierId : Nat;
+    supplierName : Text;
+    termsConditions : ?Text;
+    transport : ?Text
+  };
+type Supplier__62548867 =
+  {
+    address : Text;
+    createdAt : Int;
+    email : Text;
+    gstNo : Text;
+    id : Nat;
+    mobile : Text;
+    name : Text
+  };
+actor {
+  stable var billIdCounter : Nat;
+  stable bills :
+    {
+      var root : Node__46230540<Nat, OldBill__883518885>;
+      var size : Nat__490723111
+    };
+  stable billsV2 :
+    {
+      var root : Node__46230540<Nat, Bill__255701916>;
+      var size : Nat__490723111
+    };
+  stable var customerIdCounter : Nat;
+  stable customers :
+    {
+      var root : Node__46230540<Nat, Customer__263943254>;
+      var size : Nat__490723111
+    };
+  stable var invoiceNumberCounter : Nat;
+  stable var medicineIdCounter : Nat;
+  stable medicines :
+    {
+      var root : Node__46230540<Nat, Medicine__869616789>;
+      var size : Nat__490723111
+    };
+  stable var nextSupplierBillId : Nat;
+  stable supplierBills :
+    {
+      var root : Node__46230540<Nat, SupplierBill__140731059>;
+      var size : Nat__490723111
+    };
+  stable var supplierIdCounter : Nat;
+  stable suppliers :
+    {
+      var root : Node__46230540<Nat, Supplier__62548867>;
+      var size : Nat__490723111
+    }
+};
